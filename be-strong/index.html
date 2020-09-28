@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Be strong!</title>
+
+	<style>
+		body {
+			width: 1000px;
+			margin: 0 auto;
+		}
+
+		h2 {
+			border-bottom: 2px solid #000;
+		}
+
+		code,
+		pre {
+			background-color: #CCC;
+			padding: 4px;
+			border-radius: 2px;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Be strong!</h1>
+
+	<h2>Instructions</h2>
+	<p>
+		Write a JavaScript code which will wrap any text with <code>bold</code> styling into a <code>strong</code>
+		element.
+	</p>
+	<p>
+		The simplest example illustrating this task is having a sample CSS:
+		<pre>p {
+	font-weight: bold;
+}</pre>
+
+		and HTML:
+
+		<pre>&lt;p>Foo bar...</strong>/p></pre>
+
+		Which should be transformed into:
+		<pre>&lt;p>&lt;strong>Foo bar...&lt;/strong>&lt;/p></pre>
+	</p>
+	<p>
+		CSS styling could be added via external stylesheet, in the same document or as inline styles so all cases should
+		be taken into account.
+	</p>
+	<p>
+		You should also assume that all valid HTML markup should be covered in your solution, so it should work with
+		nested elements with different styling too.
+	</p>
+
+	<h2>Preview</h2>
+
+	<p>
+		This is a sample expected result based on part of HTML from Case 2 below (some attributes were removed to make
+		it cleaner):
+	</p>
+
+	<pre>
+&lt;p>
+	The HTML specification requires the
+	&lt;code>
+		&lt;a>
+			&lt;strong>type&lt;/strong>
+		&lt;/a>
+	&lt;/code>
+	attribute to be matched case-insensitively due to it primarily being used in the
+	&lt;a>
+		&lt;strong>
+			&lt;code>&lt;input&gt;&lt;/code>
+		&lt;/strong>
+	&lt;/a>
+	element, trying to use attribute selectors to with the...
+&lt;/p>
+	</pre>
+
+	<h2>Test cases</h2>
+
+	<p>
+		Your code should modify below HTML.
+	</p>
+
+	<p>
+		You can also <button id="switch" data-state="1">turn off</button> bold styling to see if changes applied by your
+		script are visually the same as CSS styling.
+	</p>
+
+	<h3>Case 1</h3>
+
+	<style>
+		.inline-bold-1 p {
+			font-weight: bold;
+		}
+	</style>
+
+	<div class="inline-bold-1" data-id="1">
+		<p>Foo bar...</p>
+	</div>
+
+	<h3>Case 2</h3>
+
+	<style>
+		.inline-bold-2 h4,
+		.inline-bold-2 a {
+			font-weight: bold;
+		}
+
+		.inline-bold-2 h4>span {
+			font-weight: normal;
+		}
+	</style>
+
+	<div class="inline-bold-2" data-id="2">
+		<p>From <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors">MDN:</a></p>
+		<blockquote>
+			<h4>HTML <span>ordered</span> lists</h4>
+			<p>The HTML specification requires the
+				<code><a href="/en-US/docs/Web/HTML/Element/input#attr-type">type</a></code>
+				attribute to be matched case-insensitively due to it primarily being used in the
+				<a href="/en-US/docs/Web/HTML/Element/input"
+					title="The HTML <input> element is used to create interactive controls for web-based forms in order to accept data from the user; a wide variety of types of input data and control widgets are available, depending on the device and user agent. ">
+					<code>&lt;input&gt;</code>
+				</a> element, trying to use attribute selectors to with the
+				<code><a href="/en-US/docs/Web/HTML/Element/ol#attr-type">type</a></code> attribute of an
+				<a href="/en-US/docs/Web/HTML/Element/ol"
+					title="The HTML <ol> element represents an ordered list of items — typically rendered as a numbered list.">ordered
+					list</a>
+				doesn't work without the <a href="#case-sensitive">case-sensitive</a> modifier.</p>
+		</blockquote>
+
+	</div>
+
+	<h3>Case 3</h3>
+
+	<style>
+		.inline-bold-3 li>i>em,
+		.inline-bold-3 li>i>span,
+		.inline-bold-3 li:last-child,
+		.inline-bold-3 li>p {
+			font-weight: bold;
+		}
+
+		.inline-bold-3 ol li:last-child {
+			font-weight: normal;
+		}
+	</style>
+
+	<div class="inline-bold-3" data-id="3">
+		<p>We can also have <span style="font-weight: bold;">some fun</span> with lists:</p>
+		<ul>
+			<li>Well, <i>let's get <em>wild</em> with <span>styling!</span></i></li>
+			<li>Nothing interesting here...</li>
+			<li>
+				Why not nest some lists?
+				<ol>
+					<li>Level 2-1</li>
+					<li>Level 2-2</li>
+				</ol>
+				<p>Two in fact...</p>
+				<ul>
+					<li>Foo</li>
+					<li>Bar</li>
+				</ul>
+			</li>
+			<li>The last item!</li>
+		</ul>
+	</div>
+
+	<h3>Case X</h3>
+
+	<p><em>If you would like to add some test cases which cover any edge cases or any markup which is not covered above,
+			feel free to do so :)</em></p>
+	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<script src="script.js"></script>
+
+	<script>
+		document.querySelector('#switch').addEventListener('click', evt => {
+			const button = evt.target;
+			const active = button.getAttribute('data-state') == 1;
+
+			if (active) {
+				button.setAttribute('data-state', 0);
+				button.textContent = 'turn on';
+				document.querySelectorAll('div[class^=inline-bold]').forEach(el => {
+					el.setAttribute('class', 'no-inline-bold');
+				});
+			} else {
+				button.setAttribute('data-state', 1);
+				button.textContent = 'turn off';
+				document.querySelectorAll('div.no-inline-bold').forEach(el => {
+					el.setAttribute('class', `inline-bold-${ el.getAttribute( 'data-id' ) }`);
+				});
+			}
+		});
+	</script>
+</body>
+
+</html>
